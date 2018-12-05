@@ -1,5 +1,6 @@
 import {
   createLocalVue,
+  shallowMount,  
   mount
 } from '@vue/test-utils'
 
@@ -16,7 +17,7 @@ function render (TestComponent, {
   props = null,
   store = null,
   routes = null
-} = {}, configurationCb) {
+} = {}, configurationCb , isShallow = false) {
   const localVue = createLocalVue()
   let vuexStore = null
   let router = null
@@ -38,8 +39,8 @@ function render (TestComponent, {
   if (configurationCb && typeof configurationCb === 'function') {
     configurationCb(localVue)
   }
-
-  const wrapper = mount(TestComponent, {
+  const mountMethod = isShallow ? shallowMount : mount;
+  const wrapper = mountMethod(TestComponent, {
     localVue,
     router,
     store: vuexStore,
